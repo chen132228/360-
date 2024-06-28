@@ -11,7 +11,7 @@ import com.cxj.animation360.engine.FloatViewManager;
 public class MyFloatService extends Service {
     @Nullable
     @Override
-    public IBinder onBind(Intent intent) {
+    public IBinder onBind(Intent intent) {  //该方法返回的 IBinder 对象定义了客户端用来与服务进行交互的编程接口。
         return null;
     }
 

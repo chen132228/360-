@@ -66,7 +66,7 @@ public class FloatViewManager {
                     //2.记录移动的偏移量
                     float dx = x - startX;
                     float dy = y - startY;
-                    //3.设置在窗口
+                    //3.设置在窗口（移动之后的位置）
                     params.x+=dx;
                     params.y+=dy;
                     //3.1移动的时候，悬浮球形状改变
@@ -87,12 +87,13 @@ public class FloatViewManager {
                     }else {
                         params.x=0;//表示悬浮球所处在屏幕的位置
                     }
+
                     circleView.setDragStage(false);
                     wm.updateViewLayout(circleView,params);
 
                     //TODO 判断是否消费当前点击事件
                     if (Math.abs(endX-x0)>6){
-                        return false;
+                        return true;
                     }else {
                         return false;
                     }
@@ -136,21 +137,19 @@ public class FloatViewManager {
         wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);//1.获取WindowManager实例
 
         circleView= new FloatCircleView(context);
-
+        floatMenuView = new FloatMenuView(context);
         circleView.setOnTouchListener(circleViewTouchListener);
 
         circleView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(context,"点击悬浮球",Toast.LENGTH_SHORT).show();
-                //隐藏circleView 显示菜单栏 开启动画
-                wm.removeView(circleView);
-                showFloatMenuView();
-                floatMenuView.startAnimation();
+                wm.removeView(circleView);//1.隐藏circleView浮窗小球
+                showFloatMenuView();//2.显示加速球
+                floatMenuView.startAnimation();//3.开启动画
             }
         });
 
-        floatMenuView = new FloatMenuView(context);
     }
 
     /**
@@ -217,7 +216,7 @@ public class FloatViewManager {
             params.format= PixelFormat.RGBA_8888;
         }
 
-        wm.addView(circleView,params);
+        wm.addView(circleView,params);//7.添加到窗口
 
     }
 
